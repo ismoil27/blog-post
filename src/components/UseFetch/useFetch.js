@@ -39,6 +39,8 @@ const useFetch = (url) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const abortCont = new AbortController();
+
     setTimeout(() => {
       fetch(url)
         .then((res) => {
@@ -54,11 +56,16 @@ const useFetch = (url) => {
           setError(null);
         })
         .catch((err) => {
+          if (err.name === "Abort Error") {
+            console.log("fetch aborted");
+          } else {
+            setIsLoading(false);
+            setError(err.message);
+          }
           // auto catches network / connection error
-          setIsLoading(false);
-          setError(err.message);
         });
     }, 1000);
+    return () => abortCont.abort();
   }, [url]);
 
   return { data, isLoading, error };
