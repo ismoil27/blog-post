@@ -1,11 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 
 /* base styles */
+
 * {
   margin: 0;
   font-family: "Quicksand";
   color: #333;
 }
+
+button:active {
+  transform: scale(0.97);
+}
+
 .navbar {
   padding: 20px;
   display: flex;
@@ -72,6 +78,10 @@
   margin-right: 10px;
 }
 
+.blog-details button:hover {
+  background: #00b5e2;
+}
+
 /* create new blog form */
 .create {
   max-width: 400px;
@@ -104,6 +114,9 @@
   padding: 8px;
   border-radius: 8px;
   cursor: pointer;
+}
+.create button:hover {
+  background: #00b5e2;
 }
 
 /* Not found */
