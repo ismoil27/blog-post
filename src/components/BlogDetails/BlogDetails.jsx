@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useFetch from "../UseFetch/useFetch";
 
@@ -10,7 +10,8 @@ export const BlogDetails = () => {
     error,
   } = useFetch("http://localhost:8000/blog/" + id);
 
-  const [edit, setEdit] = useState("");
+  const [selected, setSelected] = useState(null);
+  const [edit, setEdit] = useState(selected?.body);
 
   const navigate = useNavigate();
 
@@ -22,21 +23,9 @@ export const BlogDetails = () => {
     });
   };
 
-  // const handleClick = () => {
-  //   const newData = { edit, id };
-  //   fetch("http://localhost:8000/blog/" + blog.id, {
-  //     // method: "GET",
-  //     headers: { "Content-type": "application/json" },
-  //     // body: JSON.stringify(newData),
-  //   }).then(() => {
-  //     setEdit({ edit: newData });
-  //     navigate("/blog");
-  //   });
-  // };
-
   const onChange = (e) => {
-    const { id, body, value, edit } = e.target;
-    setEdit({ [edit]: value });
+    const { id, value } = e.target;
+    setEdit(value);
   };
 
   return (
@@ -47,24 +36,31 @@ export const BlogDetails = () => {
         <article>
           <h2>{blog.title}</h2>
           <p>Written by {blog.author}</p>
-          {edit === blog.id ? (
+          {selected?.id === blog.id ? (
             <textarea
               name="body"
               id=""
               cols={100}
               rows={10}
               onChange={onChange}
-              value={blog.body}
+              value={edit}
             ></textarea>
           ) : (
             <div>{blog.body}</div>
           )}
 
           <button onClick={handleDelete}>Delete</button>
-          {edit === blog.id ? (
+          {selected?.id === blog.id ? (
             <button>Save</button>
           ) : (
-            <button onClick={(e) => setEdit(blog.id)}>Edit</button>
+            <button
+              onClick={(e) => {
+                setSelected(blog);
+                setEdit(blog.body);
+              }}
+            >
+              Edit
+            </button>
           )}
         </article>
       )}

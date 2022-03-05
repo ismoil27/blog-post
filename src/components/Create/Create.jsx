@@ -40,6 +40,7 @@ const Create = () => {
         <textarea
           required
           value={body}
+          rows={10}
           onChange={(e) => setBody(e.target.value)}
         ></textarea>
         <label>Blog author:</label>
